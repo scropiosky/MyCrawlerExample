@@ -12,9 +12,9 @@ public class FBElasticImport {
 
     static String elasticHost = "192.168.152.216" ;
     static String elasticPort = "9200" ;
-    static String elasticIndex = "fb-2";
+    static String elasticIndex = "fb-3";
     static String elasticIndexType = "data";
-    static String pageName = "pcdiy";
+    static String pageName = "nba";
     static long start = 1491696000;
     static int days = 30;
 
