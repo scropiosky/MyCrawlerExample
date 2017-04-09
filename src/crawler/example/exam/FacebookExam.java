@@ -25,8 +25,8 @@ public class FacebookExam {
 
 		String uri = 
 				"https://graph.facebook.com/v2.6"
-				+ "/search?q="
-				+ "&access_token=";
+				+ "/ETtoday/feed?fields=id,reactions.limit(0).summary(total_count)"
+				+ "&access_token=1289426837805412%7Cae451649927ef2a59a839574cba8e175";
 
 
 		Elements elems =
@@ -34,14 +34,14 @@ public class FacebookExam {
 				.getFromJson(uri)
 				.select("data");
 		
-		String output = "id,reactions";
+		String output = "id,reactions\n";
 
 		// 遂筆處理
 		for( Element data: elems ){
 			String id = data.select("id").text();
-
+			String reactions = data.select("reactions").text();
 			// FIXIT
-			String reactions = "";
+
 
 
 			output += id + "," + reactions + "\n";
