@@ -10,19 +10,19 @@ import org.jsoup.select.Elements;
  */
 public class FBElasticImport {
 
-    static String elasticHost = "192.168.152.216" ;
+    static String elasticHost = "localhost" ;
     static String elasticPort = "9200" ;
-    static String elasticIndex = "fb-3";
+    static String elasticIndex = "fgo-1";
     static String elasticIndexType = "data";
-    static String pageName = "nba";
-    static long start = 1491696000;
-    static int days = 7;
+    static String pageName = "FateGO.TW";
+    static long start = 1492096441;
+    static int days = 30;
 
     public static void main(String[] args) {
         for (long datatime = start ; datatime > start-86400*days ;datatime-=3600*8) {
             String uri =
-                    "https://graph.facebook.com/v2.6"
-                            + "/"+pageName +"/feed?fields=message,comments.limit(0).summary(true),likes.limit(0).summary(true),created_time&since="+(datatime-3600*8)+"&until="+datatime+"&limit=100"
+                    "https://graph.facebook.com/v2.8"
+                            + "/"+pageName +"/feed?fields=comments,from&since="+(datatime-3600*8)+"&until="+datatime+"&limit=100"
                             + "&access_token=1289426837805412%7Cae451649927ef2a59a839574cba8e175";
 
 
@@ -40,10 +40,10 @@ public class FBElasticImport {
 
 
                     String created_time = data.select("created_time").text();
-                    String id = data.select("id").text();
-                    String message = data.select("message").text();
-                    String likes = data.select("likes > summary > total_count").text();
-                    String comments = data.select("comments > summary > total_count").text();
+                    String id = data.select("from > id").text();
+//                    String message = data.select("message").text();
+//                    String likes = data.select("likes > summary > total_count").text();
+//                    String comments = data.select("comments > summary > total_count").text();
 //                  String name = data.select("name").text();
 //                  String likes = data.select("likes").text();
 //                  String talking_about_count = data.select("talking_about_count").text();
@@ -58,11 +58,11 @@ public class FBElasticImport {
 
                     String elasticJson = "{" +
                             "\"created_time\":\"" + created_time + "\"" +
-                            ",\"message\":\"" + message + "\"" +
-                            ",\"likes\":" + likes +
+//                            ",\"message\":\"" + message + "\"" +
+//                            ",\"likes\":" + likes +
                             ",\"id\":\"" + id + "\"" +
                             ",\"pagename\":\"" + pageName + "\"" +
-                            ",\"comments\":" + comments +
+//                            ",\"comments\":" + comments +
                             "}";
 
 
@@ -71,6 +71,7 @@ public class FBElasticImport {
                             sendPost("http://" + elasticHost + ":" + elasticPort
                                             + "/" + elasticIndex + "/" + elasticIndexType
                                     , elasticJson));
+//                    System.out.println(elasticJson);
                 }
             }catch(Exception e){}
 
